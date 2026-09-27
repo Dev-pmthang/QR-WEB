@@ -117,6 +117,25 @@ function toggleSpeed() {
     showToast(labels[speedMode]);
 }
 
+// ===== BRIGHTNESS / LIGHT-DARK MODE =====
+let brightnessMode = 0; // 0 = dark, 1 = dim, 2 = light
+const brightnessClasses = ['', 'mode-dim', 'mode-light'];
+const brightnessNames = ['🌙 Nền tối (Bầu trời đêm)', '🌓 Nền tối vừa (Chiều tà)', '☀️ Nền sáng (Bình minh)'];
+const brightnessIcons = [
+    `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`,
+    `<path d="M12 2v20a10 10 0 0 0 0-20z"/>`,
+    `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`
+];
+
+function toggleBrightness() {
+    brightnessMode = (brightnessMode + 1) % 3;
+    updateBodyClasses();
+    showToast(brightnessNames[brightnessMode]);
+    try {
+        localStorage.setItem('qrweb_brightness', brightnessMode);
+    } catch (e) {}
+}
+
 // ===== THEME CHANGE =====
 let currentTheme = 0;
 const themes = ['', 'theme-aurora', 'theme-sunset'];
@@ -124,8 +143,25 @@ const themeNames = ['🌌 Vũ trụ tím', '🌿 Bắc cực quang', '🌅 Hoàn
 
 function changeTheme() {
     currentTheme = (currentTheme + 1) % themes.length;
-    document.body.className = themes[currentTheme];
+    updateBodyClasses();
     showToast(themeNames[currentTheme]);
+    try {
+        localStorage.setItem('qrweb_theme', currentTheme);
+    } catch (e) {}
+}
+
+function updateBodyClasses() {
+    document.body.classList.remove('theme-aurora', 'theme-sunset', 'mode-dim', 'mode-light');
+    if (themes[currentTheme]) {
+        document.body.classList.add(themes[currentTheme]);
+    }
+    if (brightnessClasses[brightnessMode]) {
+        document.body.classList.add(brightnessClasses[brightnessMode]);
+    }
+    const iconEl = document.getElementById('brightnessIcon');
+    if (iconEl) {
+        iconEl.innerHTML = brightnessIcons[brightnessMode];
+    }
 }
 
 // ===== WISH =====
@@ -197,6 +233,15 @@ function handleParallax(e) {
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
+    // Restore saved brightness & theme
+    try {
+        const savedB = localStorage.getItem('qrweb_brightness');
+        if (savedB !== null) brightnessMode = parseInt(savedB, 10) || 0;
+        const savedT = localStorage.getItem('qrweb_theme');
+        if (savedT !== null) currentTheme = parseInt(savedT, 10) || 0;
+    } catch (e) {}
+    updateBodyClasses();
+
     // Create star field
     createStarField();
 

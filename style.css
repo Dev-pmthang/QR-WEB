@@ -46,6 +46,133 @@ body.theme-sunset {
     --nebula-purple: rgba(244, 63, 94, 0.06);
 }
 
+/* ===== BRIGHTNESS & LIGHT / DARK MODES ===== */
+/* Dim mode (Nền tối vừa / Chiều tà dịu mắt) */
+body.mode-dim {
+    --bg-deep: #0e1026;
+    --bg-space: #17193d;
+    --text-primary: #f8fafc;
+    --text-secondary: rgba(226, 232, 240, 0.75);
+    --text-muted: rgba(148, 163, 184, 0.5);
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --nebula-blue: rgba(99, 102, 241, 0.14);
+    --nebula-purple: rgba(168, 85, 247, 0.12);
+}
+
+/* Light mode (Nền sáng / Bình minh mộng mơ) */
+body.mode-light {
+    --bg-deep: #f5f7fd;
+    --bg-space: #e7edfc;
+    --star-white: #6366f1;
+    --star-blue: #3b82f6;
+    --star-purple: #8b5cf6;
+    --star-pink: #ec4899;
+    --star-gold: #f59e0b;
+    --nebula-blue: rgba(99, 102, 241, 0.12);
+    --nebula-purple: rgba(168, 85, 247, 0.10);
+    --nebula-pink: rgba(244, 114, 182, 0.08);
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --accent: #4f46e5;
+    --accent-bright: #6366f1;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(99, 102, 241, 0.18);
+}
+
+body.mode-light.theme-aurora {
+    --bg-deep: #f0fdf4;
+    --bg-space: #dcfce7;
+    --accent: #059669;
+    --accent-bright: #10b981;
+    --star-blue: #0d9488;
+    --star-purple: #059669;
+    --nebula-blue: rgba(16, 185, 129, 0.12);
+    --nebula-purple: rgba(20, 184, 166, 0.10);
+}
+
+body.mode-light.theme-sunset {
+    --bg-deep: #fff7ed;
+    --bg-space: #ffedd5;
+    --accent: #ea580c;
+    --accent-bright: #f97316;
+    --star-blue: #ea580c;
+    --star-purple: #e11d48;
+    --star-pink: #d97706;
+    --nebula-blue: rgba(249, 115, 22, 0.12);
+    --nebula-purple: rgba(225, 29, 72, 0.10);
+}
+
+/* Light mode specific component overrides */
+body.mode-light .hero-badge {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(99, 102, 241, 0.22);
+    color: #334155;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+}
+
+body.mode-light .cta-button {
+    color: #ffffff;
+    box-shadow: 0 8px 30px rgba(79, 70, 229, 0.35);
+}
+
+body.mode-light .controls-panel {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(99, 102, 241, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.mode-light .control-btn {
+    background: rgba(241, 245, 249, 0.85);
+    border-color: rgba(99, 102, 241, 0.18);
+    color: #334155;
+}
+
+body.mode-light .control-btn:hover {
+    background: rgba(99, 102, 241, 0.15);
+    color: #4f46e5;
+    border-color: rgba(99, 102, 241, 0.35);
+}
+
+body.mode-light .wish-overlay {
+    background: rgba(240, 244, 255, 0.85);
+}
+
+body.mode-light .wish-card {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(99, 102, 241, 0.25);
+    color: #0f172a;
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.18);
+}
+
+body.mode-light .wish-card p {
+    color: #475569;
+}
+
+body.mode-light .wish-close {
+    color: #ffffff;
+}
+
+body.mode-light .toast {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(99, 102, 241, 0.25);
+    color: #0f172a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+body.mode-light .shooting-star::before {
+    background: linear-gradient(to left, rgba(79, 70, 229, 0.9), rgba(168, 85, 247, 0.5), transparent);
+}
+
+body.mode-light .shooting-star::after {
+    background: linear-gradient(to left, rgba(99, 102, 241, 0.4), transparent);
+}
+
+body.mode-light .extra-meteor::before {
+    background: linear-gradient(to left, rgba(79, 70, 229, 0.9), rgba(168, 85, 247, 0.5), transparent);
+}
+
 /* Reset */
 *, *::before, *::after {
     margin: 0;
@@ -65,7 +192,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    transition: background 1s ease;
+    transition: background 0.8s ease, color 0.5s ease;
 }
 
 /* ===== STARS BACKGROUND ===== */
@@ -321,7 +448,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 24px;
+    padding: 40px 24px 110px;
     min-height: 100vh;
 }
 
