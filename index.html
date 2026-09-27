@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang web hiệu ứng sao băng - Shooting Stars">
+    <meta name="theme-color" content="#0a0a2e">
+    <title>✨ Sao Băng - Shooting Stars</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Shooting Stars -->
+    <div class="shooting-stars" id="shootingStars">
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <!-- Nebula Glow -->
+    <div class="nebula">
+        <div class="nebula-cloud nebula-1"></div>
+        <div class="nebula-cloud nebula-2"></div>
+        <div class="nebula-cloud nebula-3"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Chào mừng bạn đến với vũ trụ</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">Đêm</span>
+                    <span class="title-line gradient-text">Sao Băng</span>
+                    <span class="title-line">Huyền Diệu</span>
+                </h1>
+                <p class="hero-description">
+                    Bạn đã quét mã QR và bước vào một vũ trụ đầy phép màu. 
+                    Hãy ngước nhìn lên và ngắm những vì sao băng lướt qua bầu trời đêm.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="starCount">0</div>
+                        <div class="stat-label">Sao băng</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="wishCount">∞</div>
+                        <div class="stat-label">Điều ước</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-value">💫</div>
+                        <div class="stat-label">Phép màu</div>
+                    </div>
+                </div>
+                <button class="cta-button" id="makeWish" onclick="makeWish()">
+                    <span class="btn-sparkle">✨</span>
+                    Gửi điều ước lên sao
+                    <span class="btn-sparkle">✨</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Wish Modal -->
+        <div class="wish-overlay" id="wishOverlay">
+            <div class="wish-card" id="wishCard">
+                <div class="wish-glow"></div>
+                <div class="wish-emoji">🌠</div>
+                <h2>Điều ước của bạn đã được gửi lên ngôi sao!</h2>
+                <p>Hãy tin rằng mọi điều tốt đẹp sẽ đến với bạn.</p>
+                <button class="wish-close" onclick="closeWish()">Tiếp tục ngắm sao ✨</button>
+            </div>
+        </div>
+
+        <!-- Interactive Controls -->
+        <div class="controls-panel" id="controlsPanel">
+            <button class="control-btn" onclick="triggerMeteorShower()" title="Mưa sao băng">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                </svg>
+            </button>
+            <button class="control-btn" onclick="toggleSpeed()" title="Tốc độ" id="speedBtn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </button>
+            <button class="control-btn" onclick="changeTheme()" title="Đổi màu" id="themeBtn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <p>Được tạo với ❤️ &mdash; Quét QR để trải nghiệm</p>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMsg"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

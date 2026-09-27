@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo QR Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #050514;
+            color: #eef2ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .container {
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: rgba(200,210,240,0.5);
+            font-size: 0.85rem;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: rgba(20,20,50,0.6);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 24px;
+            padding: 36px 28px;
+            backdrop-filter: blur(20px);
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: rgba(200,210,240,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            color: #eef2ff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input[type="url"]:focus {
+            border-color: rgba(129,140,248,0.4);
+            box-shadow: 0 0 0 3px rgba(129,140,248,0.1);
+        }
+        input[type="url"]::placeholder {
+            color: rgba(150,160,200,0.3);
+        }
+        .btn-generate {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            color: #050514;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(129,140,248,0.25);
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(129,140,248,0.4);
+        }
+        .qr-result {
+            margin-top: 28px;
+            display: none;
+        }
+        .qr-result.active { display: block; }
+        .qr-wrapper {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .qr-wrapper img, .qr-wrapper canvas {
+            display: block;
+            width: 220px;
+            height: 220px;
+        }
+        .qr-url {
+            font-size: 0.8rem;
+            color: rgba(200,210,240,0.4);
+            word-break: break-all;
+            margin-bottom: 16px;
+        }
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            color: #eef2ff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-download:hover {
+            background: rgba(129,140,248,0.15);
+            border-color: rgba(129,140,248,0.3);
+        }
+        .info {
+            margin-top: 28px;
+            padding: 16px 20px;
+            background: rgba(129,140,248,0.08);
+            border: 1px solid rgba(129,140,248,0.15);
+            border-radius: 14px;
+            text-align: left;
+        }
+        .info p {
+            font-size: 0.82rem;
+            color: rgba(200,210,240,0.6);
+            line-height: 1.6;
+        }
+        .info strong {
+            color: #818cf8;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 24px;
+            color: rgba(200,210,240,0.4);
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #818cf8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔲 Tạo QR Code</h1>
+        <p class="subtitle">Tạo mã QR trỏ đến trang Sao Băng của bạn</p>
+
+        <div class="card">
+            <div class="input-group">
+                <label>URL trang web</label>
+                <input type="url" id="urlInput" placeholder="https://your-domain.com" value="">
+            </div>
+            <button class="btn-generate" onclick="generateQR()">✨ Tạo QR Code</button>
+
+            <div class="qr-result" id="qrResult">
+                <div class="qr-wrapper">
+                    <canvas id="qrCanvas"></canvas>
+                </div>
+                <div class="qr-url" id="qrUrl"></div>
+                <a class="btn-download" id="downloadBtn" download="qr-code.png">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Tải QR Code
+                </a>
+            </div>
+        </div>
+
+        <div class="info">
+            <p>
+                <strong>Hướng dẫn:</strong><br>
+                1. Nhập URL trang web (hoặc dùng URL mặc định)<br>
+                2. Nhấn "Tạo QR Code"<br>
+                3. Tải ảnh QR về và in hoặc chia sẻ<br>
+                4. Khi quét QR → tự động mở trang web Sao Băng ✨
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">← Xem trang Sao Băng</a>
+    </div>
+
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        // GitHub Pages URL
+        const defaultURL = 'https://dev-pmthang.github.io/QR_WEB/';
+        document.getElementById('urlInput').value = defaultURL;
+
+        function generateQR() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                alert('Vui lòng nhập URL!');
+                return;
+            }
+
+            const canvas = document.getElementById('qrCanvas');
+            
+            QRCode.toCanvas(canvas, url, {
+                width: 220,
+                margin: 2,
+                color: {
+                    dark: '#1a1a3e',
+                    light: '#ffffff'
+                },
+                errorCorrectionLevel: 'H'
+            }, function(error) {
+                if (error) {
+                    console.error(error);
+                    alert('Lỗi tạo QR!');
+                    return;
+                }
+
+                document.getElementById('qrResult').classList.add('active');
+                document.getElementById('qrUrl').textContent = url;
+                
+                // Set download link
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.href = canvas.toDataURL('image/png');
+            });
+        }
+
+        // Auto generate on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(generateQR, 500);
+        });
+    </script>
+</body>
+</html>
