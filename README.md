@@ -50,6 +50,10 @@ Dự án được xây dựng với ý tưởng kịch bản:
   - 🌸 **Cánh hoa (Flower)**: Khung viền 12 cánh hoa mềm mại.
   - ⭐ **Ngôi sao (Star)**: Khung ngôi sao 8 cánh lấp lánh.
   - 🔲 **Bo mềm (Squircle)** & ⏹️ **Vuông (Square)**.
+- **Tạo hình khối các chấm QR (Matrix Shape Masking - Mới)**:
+  - 💖 **Khối theo hình (Shape Contour)**: Các chấm dữ liệu QR tự động uốn lượn và điêu khắc thành hình trái tim, ngôi sao, cánh hoa,... không bị lòi góc hay rơi ra ngoài khung.
+  - ⏹️ **Khối vuông nguyên bản**: Giữ ma trận khối vuông truyền thống nằm gọn gàng bên trong khung viền.
+  - Bảo toàn 100% 3 góc định vị (Finder Patterns) và đường định thời giúp camera điện thoại quét mã nhạy và chính xác.
 - **Biểu tượng trung tâm (Center Icon / Logo)**: Tùy chọn đặt logo/emoji ở giữa mã QR (❤️ Trái tim, ⭐ Ngôi sao, ✨ Lấp lánh, 🚀 Vũ trụ, 🎁 Quà tặng, 🎵 Âm nhạc, 🔥 Hot).
 - **15 kiểu hình dạng điểm dữ liệu (Dot Shapes)**:
   - Hình vuông, hình tròn, bo tròn góc, hình kim cương.
