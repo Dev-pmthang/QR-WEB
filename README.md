@@ -24,10 +24,16 @@ Dự án được xây dựng với ý tưởng kịch bản:
   - 🌠 **Gửi điều ước lên sao**: Mở popup điều ước kèm theo một đợt mưa sao băng chào mừng.
   - 🚀 **Mưa sao băng (Meteor Shower)**: Kích hoạt liên tiếp 15 vệt sao băng bay qua bầu trời.
   - ⏱️ **Tùy chỉnh tốc độ**: Chuyển đổi 3 mức tốc độ bay (Nhanh - Chậm - Bình thường).
-  - 🎨 **Đổi màu chủ đề (Theme)**: 3 tông màu không gian sống động:
+  - ☀️ / 🌙 **Tùy chỉnh Sáng / Tối nền (Brightness Modes)**:
+    - 🌙 *Nền tối (Dark Mode - Bầu trời đêm sâu thẳm)*
+    - 🌓 *Nền tối vừa (Dim Mode - Chiều tà dịu êm)*
+    - ☀️ *Nền sáng (Light Mode - Bình minh mộng mơ sắc nét)*
+    - Tự động lưu lựa chọn vào `localStorage`.
+  - 🎨 **Đổi tông màu vũ trụ (Theme)**: 3 tông màu không gian sống động:
     - *Vũ trụ tím* (Cosmic Purple - Mặc định)
     - *Bắc cực quang* (Aurora Green)
     - *Hoàng hôn* (Sunset Red-Orange)
+  - 🌓 **Đổi giao diện Sáng / Tối toàn diện**: Hỗ trợ trên cả trang chính và trang tạo QR ([generate-qr.html](generate-qr.html)).
 - **Tương thích toàn diện**: Tối ưu hiển thị mượt mà trên cả máy tính, máy tính bảng và điện thoại.
 
 ---
