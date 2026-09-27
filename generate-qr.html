@@ -3,219 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo QR Code</title>
+    <meta name="description" content="Tạo QR Code đẹp mắt với nhiều kiểu dáng và màu sắc">
+    <title>Tạo QR Code - QR Web</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #050514;
+            --card-bg: rgba(20, 20, 50, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --text: #eef2ff;
+            --text-secondary: rgba(200, 210, 240, 0.6);
+            --text-muted: rgba(150, 160, 200, 0.4);
+            --accent: #818cf8;
+            --accent-bright: #a78bfa;
+            --radius: 16px;
+        }
+
+        html { font-size: 16px; scroll-behavior: smooth; }
+
         body {
             font-family: 'Outfit', sans-serif;
-            background: #050514;
-            color: #eef2ff;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
+            padding: 24px 16px 48px;
         }
+
+        /* Background */
+        .bg-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-glow::before {
+            content: ''; position: absolute; width: 600px; height: 600px;
+            top: -200px; right: -200px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(99,102,241,0.12), transparent 70%);
+            filter: blur(60px);
+        }
+        .bg-glow::after {
+            content: ''; position: absolute; width: 500px; height: 500px;
+            bottom: -200px; left: -200px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(168,85,247,0.08), transparent 70%);
+            filter: blur(60px);
+        }
+
+        /* Layout */
         .container {
-            max-width: 480px;
-            width: 100%;
-            text-align: center;
+            position: relative; z-index: 1;
+            max-width: 900px; margin: 0 auto;
         }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 8px;
+
+        /* Header */
+        .header {
+            text-align: center; margin-bottom: 36px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        .header h1 {
+            font-size: 2rem; font-weight: 900;
             background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 6px;
         }
-        .subtitle {
-            color: rgba(200,210,240,0.5);
-            font-size: 0.85rem;
-            margin-bottom: 32px;
+        .header p { color: var(--text-muted); font-size: 0.88rem; }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
         }
+
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Card */
         .card {
-            background: rgba(20,20,50,0.6);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 24px;
-            padding: 36px 28px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
             backdrop-filter: blur(20px);
+            animation: slideUp 0.5s ease-out both;
         }
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
+        .card:nth-child(2) { animation-delay: 0.1s; }
+
+        .card-title {
+            font-size: 0.95rem; font-weight: 700;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
         }
-        label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: rgba(200,210,240,0.5);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+        .card-title svg { color: var(--accent); }
+
+        /* Form */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 8px;
         }
-        input[type="url"] {
-            width: 100%;
-            padding: 14px 18px;
+        input[type="url"], input[type="text"] {
+            width: 100%; padding: 13px 16px;
             background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            color: #eef2ff;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; color: var(--text);
+            font-family: 'Outfit', sans-serif; font-size: 0.92rem;
+            outline: none; transition: all 0.3s ease;
         }
-        input[type="url"]:focus {
+        input:focus {
             border-color: rgba(129,140,248,0.4);
-            box-shadow: 0 0 0 3px rgba(129,140,248,0.1);
+            box-shadow: 0 0 0 3px rgba(129,140,248,0.08);
         }
-        input[type="url"]::placeholder {
-            color: rgba(150,160,200,0.3);
+        input::placeholder { color: var(--text-muted); }
+
+        /* Option Grid */
+        .option-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
         }
+        .option-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .option-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+        .option-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 6px; padding: 12px 6px;
+            background: rgba(0,0,0,0.2);
+            border: 2px solid transparent;
+            border-radius: 12px; cursor: pointer;
+            transition: all 0.25s ease; text-align: center;
+        }
+        .option-item:hover {
+            background: rgba(129,140,248,0.08);
+            border-color: rgba(129,140,248,0.15);
+        }
+        .option-item.active {
+            background: rgba(129,140,248,0.12);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(129,140,248,0.15);
+        }
+        .option-item .preview {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .option-item .option-name {
+            font-size: 0.65rem; font-weight: 500;
+            color: var(--text-secondary); line-height: 1.2;
+        }
+
+        /* Dot shape previews */
+        .shape-preview {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+            width: 28px; height: 28px;
+        }
+        .shape-preview span {
+            background: var(--accent); width: 100%; height: 100%;
+        }
+        .shape-square span { border-radius: 0; }
+        .shape-dots span { border-radius: 50%; }
+        .shape-rounded span { border-radius: 25%; }
+        .shape-classy span { border-radius: 0 50% 50% 50%; }
+        .shape-classy span:nth-child(even) { border-radius: 50% 0 50% 50%; }
+        .shape-diamond span { transform: rotate(45deg); border-radius: 2px; width: 80%; height: 80%; margin: 10%; }
+
+        /* Color swatches */
+        .color-swatch {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 2px solid transparent; cursor: pointer;
+            transition: all 0.2s; position: relative;
+        }
+        .option-item.active .color-swatch {
+            border-color: white;
+            box-shadow: 0 0 8px rgba(255,255,255,0.3);
+        }
+
+        /* Corner style previews */
+        .corner-preview {
+            width: 28px; height: 28px;
+            border: 3px solid var(--accent);
+            position: relative;
+        }
+        .corner-preview::after {
+            content: ''; position: absolute;
+            top: 3px; left: 3px; width: 12px; height: 12px;
+            background: var(--accent);
+        }
+        .corner-square { border-radius: 0; }
+        .corner-square::after { border-radius: 0; }
+        .corner-round { border-radius: 6px; }
+        .corner-round::after { border-radius: 3px; }
+        .corner-extra-round { border-radius: 10px; }
+        .corner-extra-round::after { border-radius: 5px; }
+        .corner-dot { border-radius: 50%; }
+        .corner-dot::after { border-radius: 50%; }
+
+        /* Generate Button */
         .btn-generate {
-            width: 100%;
-            padding: 16px;
+            width: 100%; padding: 15px;
             background: linear-gradient(135deg, #818cf8, #a78bfa);
-            color: #050514;
-            border: none;
-            border-radius: 14px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
+            color: var(--bg); border: none; border-radius: 14px;
+            font-family: 'Outfit', sans-serif; font-size: 0.95rem;
+            font-weight: 700; cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(129,140,248,0.25);
+            box-shadow: 0 6px 24px rgba(129,140,248,0.25);
         }
         .btn-generate:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(129,140,248,0.4);
+            box-shadow: 0 10px 36px rgba(129,140,248,0.4);
         }
-        .qr-result {
-            margin-top: 28px;
-            display: none;
-        }
-        .qr-result.active { display: block; }
+        .btn-generate:active { transform: translateY(0); }
+
+        /* Preview Card */
+        .preview-card { text-align: center; position: sticky; top: 24px; }
         .qr-wrapper {
-            background: white;
-            border-radius: 18px;
-            padding: 24px;
-            display: inline-block;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: white; border-radius: 18px;
+            padding: 20px; display: inline-block;
+            margin: 16px 0; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            min-width: 260px; min-height: 260px;
+            display: flex; align-items: center; justify-content: center;
         }
-        .qr-wrapper img, .qr-wrapper canvas {
-            display: block;
-            width: 220px;
-            height: 220px;
+        #qrOutput { max-width: 100%; }
+        #qrOutput canvas { display: block !important; }
+
+        .qr-url-display {
+            font-size: 0.72rem; color: var(--text-muted);
+            word-break: break-all; margin-bottom: 16px;
+            padding: 0 8px; max-width: 280px; margin-left: auto; margin-right: auto;
         }
-        .qr-url {
-            font-size: 0.8rem;
-            color: rgba(200,210,240,0.4);
-            word-break: break-all;
-            margin-bottom: 16px;
+
+        .download-btns {
+            display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
         }
         .btn-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 18px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 100px;
-            color: #eef2ff;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            border-radius: 100px; color: var(--text);
+            font-family: 'Outfit', sans-serif; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
             text-decoration: none;
         }
         .btn-download:hover {
             background: rgba(129,140,248,0.15);
             border-color: rgba(129,140,248,0.3);
         }
-        .info {
-            margin-top: 28px;
-            padding: 16px 20px;
-            background: rgba(129,140,248,0.08);
-            border: 1px solid rgba(129,140,248,0.15);
-            border-radius: 14px;
-            text-align: left;
+        .btn-download.primary {
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            color: var(--bg); border-color: transparent;
         }
-        .info p {
-            font-size: 0.82rem;
-            color: rgba(200,210,240,0.6);
-            line-height: 1.6;
+        .btn-download.primary:hover {
+            box-shadow: 0 4px 16px rgba(129,140,248,0.3);
         }
-        .info strong {
-            color: #818cf8;
+
+        /* Footer */
+        .footer {
+            text-align: center; margin-top: 36px;
+            animation: fadeIn 0.5s ease-out 0.3s both;
         }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 24px;
-            color: rgba(200,210,240,0.4);
-            font-size: 0.82rem;
-            text-decoration: none;
-            transition: color 0.3s;
+        .footer a {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--text-muted); font-size: 0.82rem;
+            text-decoration: none; transition: color 0.3s;
         }
-        .back-link:hover { color: #818cf8; }
+        .footer a:hover { color: var(--accent); }
+
+        /* Placeholder */
+        .qr-placeholder {
+            color: var(--text-muted); font-size: 0.85rem;
+        }
+        .qr-placeholder svg { margin-bottom: 12px; opacity: 0.3; }
+
+        /* Section Separator */
+        .separator {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 20px 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        ::selection {
+            background: rgba(129,140,248,0.3);
+            color: var(--text);
+        }
+
+        @media (max-width: 480px) {
+            .option-grid { grid-template-columns: repeat(3, 1fr); }
+            .option-grid.cols-5 { grid-template-columns: repeat(3, 1fr); }
+            .qr-wrapper { min-width: 220px; min-height: 220px; }
+        }
     </style>
 </head>
 <body>
+    <div class="bg-glow"></div>
+
     <div class="container">
-        <h1>🔲 Tạo QR Code</h1>
-        <p class="subtitle">Tạo mã QR trỏ đến trang Sao Băng của bạn</p>
+        <!-- Header -->
+        <div class="header">
+            <h1>🔲 Tạo QR Code</h1>
+            <p>Tạo mã QR đẹp mắt với nhiều kiểu dáng</p>
+        </div>
 
-        <div class="card">
-            <div class="input-group">
-                <label>URL trang web</label>
-                <input type="url" id="urlInput" placeholder="https://your-domain.com" value="">
-            </div>
-            <button class="btn-generate" onclick="generateQR()">✨ Tạo QR Code</button>
-
-            <div class="qr-result" id="qrResult">
-                <div class="qr-wrapper">
-                    <canvas id="qrCanvas"></canvas>
-                </div>
-                <div class="qr-url" id="qrUrl"></div>
-                <a class="btn-download" id="downloadBtn" download="qr-code.png">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Settings Panel -->
+            <div class="card" id="settingsCard">
+                <!-- URL Input -->
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                     </svg>
-                    Tải QR Code
-                </a>
+                    URL trang web
+                </div>
+                <div class="form-group">
+                    <input type="url" id="urlInput" placeholder="https://example.com" value="https://dev-pmthang.github.io/QR-WEB/">
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Dot Shape -->
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                    </svg>
+                    Hình dạng điểm (Dot Shape)
+                </div>
+                <div class="form-group">
+                    <div class="option-grid" id="dotShapeGrid">
+                        <div class="option-item active" data-value="square" onclick="selectOption('dotShape', this)">
+                            <div class="preview"><div class="shape-preview shape-square"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+                            <div class="option-name">Vuông</div>
+                        </div>
+                        <div class="option-item" data-value="dots" onclick="selectOption('dotShape', this)">
+                            <div class="preview"><div class="shape-preview shape-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+                            <div class="option-name">Chấm tròn</div>
+                        </div>
+                        <div class="option-item" data-value="rounded" onclick="selectOption('dotShape', this)">
+                            <div class="preview"><div class="shape-preview shape-rounded"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+                            <div class="option-name">Bo tròn</div>
+                        </div>
+                        <div class="option-item" data-value="classy-rounded" onclick="selectOption('dotShape', this)">
+                            <div class="preview"><div class="shape-preview shape-classy"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+                            <div class="option-name">Thanh lịch</div>
+                        </div>
+                        <div class="option-item" data-value="extra-rounded" onclick="selectOption('dotShape', this)">
+                            <div class="preview"><div class="shape-preview shape-dots"><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span><span style="border-radius:40%"></span></div></div>
+                            <div class="option-name">Siêu tròn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Corner Square Shape -->
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <rect x="8" y="8" width="8" height="8" rx="1"/>
+                    </svg>
+                    Hình dạng góc (Corner Shape)
+                </div>
+                <div class="form-group">
+                    <div class="option-grid" id="cornerShapeGrid">
+                        <div class="option-item active" data-value="square" onclick="selectOption('cornerShape', this)">
+                            <div class="preview"><div class="corner-preview corner-square"></div></div>
+                            <div class="option-name">Vuông</div>
+                        </div>
+                        <div class="option-item" data-value="dot" onclick="selectOption('cornerShape', this)">
+                            <div class="preview"><div class="corner-preview corner-dot"></div></div>
+                            <div class="option-name">Tròn</div>
+                        </div>
+                        <div class="option-item" data-value="extra-rounded" onclick="selectOption('cornerShape', this)">
+                            <div class="preview"><div class="corner-preview corner-extra-round"></div></div>
+                            <div class="option-name">Bo lớn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Color Theme -->
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a7 7 0 0 0 0 20 4 4 0 0 1 0-8 4 4 0 0 0 0-8z"/>
+                    </svg>
+                    Kiểu màu (Color Style)
+                </div>
+                <div class="form-group">
+                    <div class="option-grid cols-5" id="colorGrid">
+                        <div class="option-item active" data-value="classic" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: #1a1a3e;"></div></div>
+                            <div class="option-name">Tối</div>
+                        </div>
+                        <div class="option-item" data-value="black" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: #000000;"></div></div>
+                            <div class="option-name">Đen</div>
+                        </div>
+                        <div class="option-item" data-value="ocean" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #0077b6, #00b4d8);"></div></div>
+                            <div class="option-name">Đại dương</div>
+                        </div>
+                        <div class="option-item" data-value="sunset" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #e63946, #f4a261);"></div></div>
+                            <div class="option-name">Hoàng hôn</div>
+                        </div>
+                        <div class="option-item" data-value="forest" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #2d6a4f, #52b788);"></div></div>
+                            <div class="option-name">Rừng xanh</div>
+                        </div>
+                        <div class="option-item" data-value="purple" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #7209b7, #b5179e);"></div></div>
+                            <div class="option-name">Tím</div>
+                        </div>
+                        <div class="option-item" data-value="gold" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #b8860b, #ffd700);"></div></div>
+                            <div class="option-name">Vàng kim</div>
+                        </div>
+                        <div class="option-item" data-value="neon" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #00ff87, #60efff);"></div></div>
+                            <div class="option-name">Neon</div>
+                        </div>
+                        <div class="option-item" data-value="rose" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #ff006e, #fb5607);"></div></div>
+                            <div class="option-name">Hồng</div>
+                        </div>
+                        <div class="option-item" data-value="mono" onclick="selectOption('color', this)">
+                            <div class="preview"><div class="color-swatch" style="background: linear-gradient(135deg, #333, #888);"></div></div>
+                            <div class="option-name">Xám</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Background -->
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    </svg>
+                    Nền QR
+                </div>
+                <div class="form-group">
+                    <div class="option-grid cols-3" id="bgGrid">
+                        <div class="option-item active" data-value="white" onclick="selectOption('bg', this)">
+                            <div class="preview"><div class="color-swatch" style="background: #ffffff; border: 1px solid rgba(255,255,255,0.2);"></div></div>
+                            <div class="option-name">Trắng</div>
+                        </div>
+                        <div class="option-item" data-value="light" onclick="selectOption('bg', this)">
+                            <div class="preview"><div class="color-swatch" style="background: #f0f0f5;"></div></div>
+                            <div class="option-name">Xám nhạt</div>
+                        </div>
+                        <div class="option-item" data-value="transparent" onclick="selectOption('bg', this)">
+                            <div class="preview"><div class="color-swatch" style="background: conic-gradient(#444 25%, #666 25% 50%, #444 50% 75%, #666 75%); background-size: 16px 16px;"></div></div>
+                            <div class="option-name">Trong suốt</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <button class="btn-generate" onclick="generateQR()">✨ Tạo QR Code</button>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="card preview-card" id="previewCard">
+                <div class="card-title" style="justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    Xem trước
+                </div>
+
+                <div class="qr-wrapper" id="qrWrapper">
+                    <div id="qrOutput">
+                        <div class="qr-placeholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                <rect x="15" y="15" width="5" height="5" rx="1"/>
+                            </svg>
+                            <div>Nhấn "Tạo QR Code"</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr-url-display" id="qrUrlDisplay"></div>
+
+                <div class="download-btns" id="downloadBtns" style="display: none;">
+                    <button class="btn-download primary" onclick="downloadQR('png')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        PNG
+                    </button>
+                    <button class="btn-download" onclick="downloadQR('svg')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        SVG
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="info">
-            <p>
-                <strong>Hướng dẫn:</strong><br>
-                1. Nhập URL trang web (hoặc dùng URL mặc định)<br>
-                2. Nhấn "Tạo QR Code"<br>
-                3. Tải ảnh QR về và in hoặc chia sẻ<br>
-                4. Khi quét QR → tự động mở trang web Sao Băng ✨
-            </p>
+        <!-- Footer -->
+        <div class="footer">
+            <a href="index.html">← Xem trang Sao Băng ✨</a>
         </div>
-
-        <a href="index.html" class="back-link">← Xem trang Sao Băng</a>
     </div>
 
-    <!-- QR Code library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- QR Code Styling Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
     <script>
-        // GitHub Pages URL
-        const defaultURL = 'https://dev-pmthang.github.io/QR-WEB/';
-        document.getElementById('urlInput').value = defaultURL;
+        // ===== STATE =====
+        let currentQR = null;
+        const state = {
+            dotShape: 'square',
+            cornerShape: 'square',
+            color: 'classic',
+            bg: 'white'
+        };
 
+        // ===== COLOR THEMES =====
+        const colorThemes = {
+            classic:  { type: 'single', color: '#1a1a3e' },
+            black:    { type: 'single', color: '#000000' },
+            ocean:    { type: 'gradient', colors: ['#0077b6', '#00b4d8'] },
+            sunset:   { type: 'gradient', colors: ['#e63946', '#f4a261'] },
+            forest:   { type: 'gradient', colors: ['#2d6a4f', '#52b788'] },
+            purple:   { type: 'gradient', colors: ['#7209b7', '#b5179e'] },
+            gold:     { type: 'gradient', colors: ['#b8860b', '#ffd700'] },
+            neon:     { type: 'gradient', colors: ['#00ff87', '#60efff'] },
+            rose:     { type: 'gradient', colors: ['#ff006e', '#fb5607'] },
+            mono:     { type: 'gradient', colors: ['#333333', '#888888'] },
+        };
+
+        const bgColors = {
+            white: '#ffffff',
+            light: '#f0f0f5',
+            transparent: 'transparent'
+        };
+
+        // ===== SELECT OPTION =====
+        function selectOption(group, element) {
+            const gridMap = {
+                dotShape: 'dotShapeGrid',
+                cornerShape: 'cornerShapeGrid',
+                color: 'colorGrid',
+                bg: 'bgGrid'
+            };
+            const gridId = gridMap[group];
+            document.querySelectorAll(`#${gridId} .option-item`).forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            state[group] = element.dataset.value;
+
+            // Auto regenerate if QR exists
+            if (currentQR) generateQR();
+        }
+
+        // ===== GENERATE QR =====
         function generateQR() {
             const url = document.getElementById('urlInput').value.trim();
             if (!url) {
@@ -223,35 +589,101 @@
                 return;
             }
 
-            const canvas = document.getElementById('qrCanvas');
-            
-            QRCode.toCanvas(canvas, url, {
-                width: 220,
-                margin: 2,
-                color: {
-                    dark: '#1a1a3e',
-                    light: '#ffffff'
-                },
-                errorCorrectionLevel: 'H'
-            }, function(error) {
-                if (error) {
-                    console.error(error);
-                    alert('Lỗi tạo QR!');
-                    return;
-                }
+            const output = document.getElementById('qrOutput');
+            output.innerHTML = '';
 
-                document.getElementById('qrResult').classList.add('active');
-                document.getElementById('qrUrl').textContent = url;
-                
-                // Set download link
-                const downloadBtn = document.getElementById('downloadBtn');
-                downloadBtn.href = canvas.toDataURL('image/png');
+            const theme = colorThemes[state.color];
+            const dotOptions = { type: state.dotShape };
+            const cornerSquareOptions = { type: state.cornerShape };
+            const cornerDotOptions = { type: state.cornerShape === 'extra-rounded' ? 'dot' : state.cornerShape };
+
+            if (theme.type === 'gradient') {
+                dotOptions.gradient = {
+                    type: 'linear',
+                    rotation: Math.PI / 4,
+                    colorStops: [
+                        { offset: 0, color: theme.colors[0] },
+                        { offset: 1, color: theme.colors[1] }
+                    ]
+                };
+                cornerSquareOptions.gradient = {
+                    type: 'linear',
+                    rotation: Math.PI / 4,
+                    colorStops: [
+                        { offset: 0, color: theme.colors[0] },
+                        { offset: 1, color: theme.colors[1] }
+                    ]
+                };
+                cornerDotOptions.gradient = {
+                    type: 'linear',
+                    rotation: Math.PI / 4,
+                    colorStops: [
+                        { offset: 0, color: theme.colors[0] },
+                        { offset: 1, color: theme.colors[1] }
+                    ]
+                };
+            } else {
+                dotOptions.color = theme.color;
+                cornerSquareOptions.color = theme.color;
+                cornerDotOptions.color = theme.color;
+            }
+
+            const qrOptions = {
+                width: 240,
+                height: 240,
+                type: 'canvas',
+                data: url,
+                margin: 8,
+                qrOptions: {
+                    errorCorrectionLevel: 'H'
+                },
+                dotsOptions: dotOptions,
+                cornersSquareOptions: cornerSquareOptions,
+                cornersDotOptions: cornerDotOptions,
+                backgroundOptions: {
+                    color: bgColors[state.bg]
+                }
+            };
+
+            currentQR = new QRCodeStyling(qrOptions);
+            currentQR.append(output);
+
+            // Update UI
+            document.getElementById('qrUrlDisplay').textContent = url;
+            document.getElementById('downloadBtns').style.display = 'flex';
+
+            // Update wrapper bg for transparent
+            const wrapper = document.getElementById('qrWrapper');
+            if (state.bg === 'transparent') {
+                wrapper.style.background = 'repeating-conic-gradient(#e0e0e0 0% 25%, #fff 0% 50%) 50%/16px 16px';
+            } else {
+                wrapper.style.background = 'white';
+            }
+        }
+
+        // ===== DOWNLOAD =====
+        function downloadQR(format) {
+            if (!currentQR) return;
+            currentQR.download({
+                name: 'qr-code',
+                extension: format
             });
         }
 
-        // Auto generate on load
+        // ===== INIT =====
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(generateQR, 500);
+            setTimeout(generateQR, 300);
+        });
+
+        // Auto-generate on URL change (debounced)
+        let urlTimeout;
+        document.getElementById('urlInput').addEventListener('input', () => {
+            clearTimeout(urlTimeout);
+            urlTimeout = setTimeout(() => {
+                if (document.getElementById('urlInput').value.trim()) {
+                    generateQR();
+                }
+            }, 600);
         });
     </script>
 </body>
